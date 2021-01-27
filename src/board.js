@@ -2,12 +2,33 @@ class Board {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    this.board = Array(height)
+    this.board = Array(this.height)
       .fill()
-      .map(() => Array(width));
+      .map(() => Array(this.width));
   }
 
-  clearLines() {}
+  clearLines() {
+    let linesCleared = 0;
+    let i = this.height - 1;
+    while (i > 0) {
+      let filledLine = true;
+      for (let j = 0; j < this.width; j++) {
+        if (this.board[i][j] == null) {
+          filledLine = false;
+          break;
+        }
+      }
+
+      if (filledLine) {
+        this.board.splice(i, 1);
+        this.board.unshift(Array(this.width));
+        linesCleared++;
+      } else {
+        i--;
+      }
+    }
+    return linesCleared;
+  }
 
   isSpotAvailable(piece, x, y) {
     if (y >= this.height) return false;

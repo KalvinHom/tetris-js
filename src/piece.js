@@ -7,16 +7,13 @@ class Piece {
   getShape() {
     return this.rotations[this.rotation_index];
   }
-  rotateClockwise() {
+  rotate(direction) {
     const limit = this.rotations.length;
-    this.rotation_index = this.rotation_index + 1;
-    if (this.rotation_index >= limit) this.rotation_index = 0;
-  }
-
-  rotateCounterClockwise() {
-    const limit = this.rotations.length;
-    this.rotation_index = this.rotation_index - 1;
-    if (this.rotation_index <= 0) this.rotation_index = limit - 1;
+    this.rotation_index = this.rotation_index + direction;
+    if (this.rotation_index >= limit) {
+      this.rotation_index = 0;
+    }
+    if (this.rotation_index < 0) this.rotation_index = limit - 1;
   }
 }
 

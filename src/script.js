@@ -3,14 +3,17 @@ import Board from "./board";
 import Canvas from "./canvas";
 import Game from "./game";
 import "./style.css";
+import { CLOCKWISE, COUNTERCLOCKWISE } from "./constants";
 
 const piece = new LPiece();
 
 const game = new Game();
 game.startGame();
 
+let timeoutId = 0;
 window.addEventListener("keydown", function (event) {
-  console.log(event.key);
+  if (event.repeat) return;
+  event.key;
   switch (event.key) {
     case "ArrowLeft":
     case "a":
@@ -25,10 +28,10 @@ window.addEventListener("keydown", function (event) {
       game.speedOn();
       break;
     case "q":
-      game.rotatePieceCounter();
+      game.rotate(COUNTERCLOCKWISE);
       break;
     case "e":
-      game.rotatePieceClock();
+      game.rotate(CLOCKWISE);
       break;
     default:
       return;
