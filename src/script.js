@@ -10,9 +10,11 @@ const piece = new LPiece();
 const game = new Game();
 game.startGame();
 
-let timeoutId = 0;
+let fired = false;
 window.addEventListener("keydown", function (event) {
   if (event.repeat) return;
+  if (fired) return;
+  fired = true;
   event.key;
   switch (event.key) {
     case "ArrowLeft":
@@ -34,8 +36,11 @@ window.addEventListener("keydown", function (event) {
       game.rotate(CLOCKWISE);
       break;
     default:
+      fired = false;
+
       return;
   }
+  fired = false;
 });
 
 window.addEventListener("keyup", function (event) {
