@@ -1,4 +1,5 @@
 import Board from "./board";
+import { HIDDEN_ROWS } from "./constants";
 
 // this class focuses on how to draw elements
 class Canvas {
@@ -74,7 +75,7 @@ class Canvas {
   drawBorders() {
     const boardBorder = [
       this.boardPosX - this.borderThickness,
-      this.boardPosY - this.borderThickness,
+      this.boardPosY + HIDDEN_ROWS * this.cellSize - this.borderThickness,
       this.borderThickness + this.boardPosX + this.board.width * this.cellSize,
       this.borderThickness + this.boardPosY + this.board.height * this.cellSize,
     ];
@@ -96,7 +97,7 @@ class Canvas {
     this.context.lineWidth = 0.5;
 
     const boardRight = this.boardPosX + this.cellSize * this.board.width;
-    for (let i = 1; i < this.board.height; i++) {
+    for (let i = 3; i < this.board.height; i++) {
       const height = this.boardPosY + i * this.cellSize;
       this.context.beginPath();
       this.context.moveTo(this.boardPosX, height);
@@ -111,7 +112,8 @@ class Canvas {
     for (let i = 1; i < this.board.width; i++) {
       const height = this.boardPosX + i * this.cellSize;
       this.context.beginPath();
-      this.context.moveTo(height, this.boardPosY);
+      console.log(HIDDEN_ROWS);
+      this.context.moveTo(height, this.boardPosY + HIDDEN_ROWS * this.cellSize);
       this.context.lineTo(height, boardBottom);
       this.context.closePath();
       this.context.stroke();
@@ -122,8 +124,8 @@ class Canvas {
     this.drawBorders();
     this.drawGrid();
 
-    for (let i = 0; i < this.board.height; i++) {
-      for (let j = 0; j < this.board.width; j++) {
+    for (let i = 3; i < this.board.height; i++) {
+      for (let j = 3; j < this.board.width; j++) {
         if (this.board.board[i][j] != null) {
           this.drawSquare(
             this.boardPosX + j * this.cellSize,
@@ -139,7 +141,6 @@ class Canvas {
     this.context.beginPath();
 
     this.context.fillStyle = color;
-
     this.context.fillRect(
       x + 0.5,
       y + 0.5,
@@ -153,11 +154,13 @@ class Canvas {
     for (let i = 0; i < shape.length; ++i) {
       for (let j = 0; j < shape[i].length; ++j) {
         if (shape[i][j] != 0) {
-          this.drawSquare(
-            this.boardPosX + (posX + j) * this.cellSize,
-            this.boardPosY + (posY + i) * this.cellSize,
-            piece.color
-          );
+          if (posY + i >= HIDDEN_ROWS) {
+            this.drawSquare(
+              this.boardPosX + (posX + j) * this.cellSize,
+              this.boardPosY + (posY + i) * this.cellSize,
+              piece.color
+            );
+          }
         }
       }
     }

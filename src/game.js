@@ -15,7 +15,7 @@ const GAMEOVER = 1;
 
 class Game {
   constructor() {
-    this.board = new Board(10, 22);
+    this.board = new Board(10, 25);
     this.canvas = new Canvas(this.board);
     this.state = ALIVE;
     this.gameSpeed = 1000;

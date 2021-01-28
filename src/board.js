@@ -2,7 +2,8 @@ class Board {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    this.board = Array(this.height)
+    this.hiddenHeight = 3;
+    this.board = Array(this.height + this.hiddenHeight)
       .fill()
       .map(() => Array(this.width));
   }
