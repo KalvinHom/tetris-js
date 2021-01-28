@@ -1,4 +1,3 @@
-import LPiece from "./l_piece";
 import Board from "./board";
 import Canvas from "./canvas";
 import Game from "./game";
@@ -6,8 +5,6 @@ import "./style.css";
 import { CLOCKWISE, COUNTERCLOCKWISE } from "./constants";
 const LEFT = -1;
 const RIGHT = 1;
-
-const piece = new LPiece();
 
 const game = new Game();
 game.startGame();
