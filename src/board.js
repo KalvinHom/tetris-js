@@ -31,6 +31,7 @@ class Board {
   }
 
   isSpotAvailable(piece, x, y) {
+    // debugger;
     if (y >= this.height) return false;
 
     const shape = piece.getShape();

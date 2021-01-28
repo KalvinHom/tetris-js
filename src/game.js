@@ -42,9 +42,13 @@ class Game {
   }
 
   rotate(direction) {
-    let rotatedPiece = Object.assign(this.currentPiece, {});
+    let rotatedPiece = Object.assign(
+      Object.create(Object.getPrototypeOf(this.currentPiece)),
+      this.currentPiece
+    );
     rotatedPiece.rotate(direction);
     const isValid = this.verifyRotation(rotatedPiece, 0);
+    console.log(isValid);
     if (isValid) this.currentPiece = rotatedPiece;
     this.render();
   }
@@ -57,7 +61,8 @@ class Game {
       this.pieceX + offset,
       this.pieceY
     );
-
+    console.log(isValid);
+    console.log(offset);
     if (isValid) {
       this.pieceX += offset;
       return true;

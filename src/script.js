@@ -12,7 +12,6 @@ game.startGame();
 
 let fired = false;
 window.addEventListener("keydown", function (event) {
-  if (event.repeat) return;
   if (fired) return;
   fired = true;
   event.key;
