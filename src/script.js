@@ -11,6 +11,7 @@ game.startGame();
 
 let fired = false;
 window.addEventListener("keydown", function (event) {
+  event.preventDefault();
   if (fired) return;
   fired = true;
   event.key;
