@@ -5,7 +5,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-  "homepage": "http://kalvinhom.github.io/tetris-js",
+  "homepage": "http://kalvinhom.github.io/tetris-js/",
 
 
   "dependencies": {

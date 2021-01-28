@@ -2,9 +2,13 @@ import Board from "./board";
 import Canvas from "./canvas";
 import LinePiece from "./line_piece";
 import LPiece from "./l_piece";
+import L2Piece from "./l2_piece";
 import OPiece from "./o_piece";
+import ZPiece from "./z_piece";
+import Z2Piece from "./z_piece";
+import TPiece from "./t_piece";
 
-const PIECES = [LPiece, LinePiece, OPiece];
+const PIECES = [LPiece, L2Piece, ZPiece, Z2Piece, TPiece, LinePiece, OPiece];
 
 const ALIVE = 0;
 const GAMEOVER = 1;
@@ -23,7 +27,7 @@ class Game {
   }
 
   placeNewPiece() {
-    const piece = new this.nextPiece();
+    const piece = this.nextPiece;
     this.setNextPiece();
     this.currentPiece = piece;
     this.pieceX = 3;
@@ -58,7 +62,6 @@ class Game {
       this.pieceX += offset;
       return true;
     }
-    console.log("invalid!");
     if (offset == 0) return this.verifyRotation(piece, 1);
     if (offset == 1) return this.verifyRotation(piece, -1);
     return false;
@@ -113,17 +116,25 @@ class Game {
       }
 
       this.addScore(linesCleared);
+      this.addLevel();
       this.placeNewPiece(this.currentPiece);
     }
   }
 
   addScore(linesCleared) {
-    this.score += this.level * (2 ^ (linesCleared - 1)) * 100;
+    if (linesCleared > 0) {
+      console.log(linesCleared);
+      console.log(this.level * Math.pow(2, linesCleared - 1) * 100);
+      this.score += this.level * Math.pow(2, linesCleared - 1) * 100;
+    }
+  }
+  addLevel() {
+    if (this.score / 1000 / this.level > this.level) this.level++;
   }
 
   setNextPiece() {
-    const rand = Math.floor(Math.random() * 3);
-    this.nextPiece = PIECES[rand];
+    const rand = Math.floor(Math.random() * 7);
+    this.nextPiece = new PIECES[rand]();
   }
 
   startGame() {
@@ -134,6 +145,10 @@ class Game {
 
   render() {
     this.canvas.drawBoard();
+    this.canvas.drawScore(this.score);
+    this.canvas.drawPiecePreview(this.nextPiece);
+    this.canvas.drawLevel(this.level);
+
     if (this.currentPiece)
       this.canvas.drawPiece(this.currentPiece, this.pieceX, this.pieceY);
   }
