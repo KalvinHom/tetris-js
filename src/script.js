@@ -31,6 +31,8 @@ window.addEventListener("keydown", function (event) {
       game.rotate(COUNTERCLOCKWISE);
       break;
     case "e":
+    case "w":
+    case "ArrowUp":
       game.rotate(CLOCKWISE);
       break;
     default:
