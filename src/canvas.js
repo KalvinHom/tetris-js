@@ -112,7 +112,6 @@ class Canvas {
     for (let i = 1; i < this.board.width; i++) {
       const height = this.boardPosX + i * this.cellSize;
       this.context.beginPath();
-      console.log(HIDDEN_ROWS);
       this.context.moveTo(height, this.boardPosY + HIDDEN_ROWS * this.cellSize);
       this.context.lineTo(height, boardBottom);
       this.context.closePath();
@@ -123,9 +122,8 @@ class Canvas {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawBorders();
     this.drawGrid();
-
-    for (let i = 3; i < this.board.height; i++) {
-      for (let j = 3; j < this.board.width; j++) {
+    for (let i = HIDDEN_ROWS; i < this.board.height; i++) {
+      for (let j = 0; j < this.board.width; j++) {
         if (this.board.board[i][j] != null) {
           this.drawSquare(
             this.boardPosX + j * this.cellSize,

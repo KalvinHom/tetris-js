@@ -48,7 +48,6 @@ class Game {
     );
     rotatedPiece.rotate(direction);
     const isValid = this.verifyRotation(rotatedPiece, 0);
-    console.log(isValid);
     if (isValid) this.currentPiece = rotatedPiece;
     this.render();
   }
@@ -61,8 +60,6 @@ class Game {
       this.pieceX + offset,
       this.pieceY
     );
-    console.log(isValid);
-    console.log(offset);
     if (isValid) {
       this.pieceX += offset;
       return true;
@@ -110,15 +107,12 @@ class Game {
       this.pieceX,
       this.pieceY + 1
     );
+
     if (available) this.pieceY = this.pieceY + 1;
     else {
       this.board.placePiece(this.currentPiece, this.pieceX, this.pieceY);
       const linesCleared = this.board.clearLines();
       if (linesCleared > 0) this.numClears++;
-      if (this.numClears == 10) {
-        this.level++;
-        this.numClears = 0;
-      }
 
       this.addScore(linesCleared);
       this.addLevel();
@@ -128,8 +122,6 @@ class Game {
 
   addScore(linesCleared) {
     if (linesCleared > 0) {
-      console.log(linesCleared);
-      console.log(this.level * Math.pow(2, linesCleared - 1) * 100);
       this.score += this.level * Math.pow(2, linesCleared - 1) * 100;
     }
   }

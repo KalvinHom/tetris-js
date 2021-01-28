@@ -2,8 +2,7 @@ class Board {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    this.hiddenHeight = 3;
-    this.board = Array(this.height + this.hiddenHeight)
+    this.board = Array(this.height)
       .fill()
       .map(() => Array(this.width));
   }
@@ -51,6 +50,8 @@ class Board {
   }
 
   placePiece(piece, x, y) {
+    console.log(`placing piece at ${x}, ${y}`);
+
     const shape = piece.getShape();
     for (let i = 0; i < shape.length; ++i) {
       for (let j = 0; j < shape[i].length; ++j) {
@@ -59,6 +60,7 @@ class Board {
         }
       }
     }
+    console.log(this.board);
   }
 }
 
