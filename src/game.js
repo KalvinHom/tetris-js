@@ -36,6 +36,7 @@ class Game {
     this.level = 1;
     this.score = 0;
     this.numClears = 0;
+    this.timesCleared = 0;
   }
 
   startGame() {
@@ -83,10 +84,8 @@ class Game {
     else {
       this.board.placePiece(this.currentPiece, this.pieceX, this.pieceY);
       const linesCleared = this.board.clearLines();
-      if (linesCleared > 0) this.numClears++;
 
       this.addScore(linesCleared);
-      this.addLevel();
       this.placeNewPiece(this.currentPiece);
     }
   }
@@ -137,12 +136,14 @@ class Game {
   addScore(linesCleared) {
     if (linesCleared > 0) {
       this.score += this.level * Math.pow(2, linesCleared - 1) * 100;
+      this.timesCleared++;
+      this.addLevel();
     }
   }
   addLevel() {
-    if (this.score / 1000 / this.level > this.level) {
+    if (this.timesCleared != 0 && this.timesCleared % 10 == 0) {
       this.level++;
-      this.gameSpeed / 2;
+      this.gameSpeed /= 2;
     }
   }
 
