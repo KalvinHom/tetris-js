@@ -131,7 +131,8 @@ class Game {
   addLevel() {
     if (this.score / 1000 / this.level > this.level) {
       this.level++;
-      this.gameSpeed/2;
+      this.gameSpeed / 2;
+    }
   }
 
   setNextPiece() {
