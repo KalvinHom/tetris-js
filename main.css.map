@@ -1,1 +1,1 @@
-{"version":3,"sources":["webpack:///./src/style.css"],"names":[],"mappings":"AAAA;EACE,uBAAuB;EACvB,UAAU;EACV,WAAW;AACb,C","file":"main.css","sourcesContent":[".tetris {\n  /* position:absolute; */\n  width:100%;\n  height:100%;\n}"],"sourceRoot":""}
+{"version":3,"sources":["webpack:///./src/style.css"],"names":[],"mappings":"AAAA;EACE,uBAAuB;EACvB,UAAU;EACV,WAAW;AACb,C","file":"main.css","sourcesContent":[".tetris {\r\n  /* position:absolute; */\r\n  width:100%;\r\n  height:100%;\r\n}"],"sourceRoot":""}
