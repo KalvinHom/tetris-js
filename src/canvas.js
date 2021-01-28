@@ -91,14 +91,12 @@ class Canvas {
   }
 
   drawLevel(level) {
-    this.context.stroke();
     this.context.font = "40px serif";
     this.context.fillStyle = "#000000";
     this.context.fillText(`Level: ${level}`, this.levelPosX, this.levelPosY);
   }
 
   drawScore(score) {
-    this.context.stroke();
     this.context.font = "40px serif";
     this.context.fillStyle = "#000000";
     this.context.fillText(`Score: ${score}`, this.scorePosX, this.scorePosY);
@@ -178,6 +176,15 @@ class Canvas {
     this.context.font = "40pt Serif";
     this.context.fillStyle = "#000000";
     this.context.fillText("Restart", 550, 570);
+  }
+
+  drawControls() {
+    this.context.font = "20px serif";
+    this.context.fillStyle = "#000000";
+    this.context.fillText("Controls:", 550, 700);
+    this.context.fillText("Q/E - rotate", 550, 720);
+    this.context.fillText("W/D or left/right arrows - left/right", 550, 740);
+    this.context.fillText("S or down arrow - speed down", 550, 760);
   }
 }
 

@@ -183,6 +183,7 @@ class Game {
     this.canvas.drawScore(this.score);
     this.canvas.drawPiecePreview(this.nextPiece);
     this.canvas.drawLevel(this.level);
+    this.canvas.drawControls();
 
     if (this.state == GAMEOVER) {
       this.showRestart();
