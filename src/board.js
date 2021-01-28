@@ -31,7 +31,6 @@ class Board {
   }
 
   isSpotAvailable(piece, x, y) {
-    // debugger;
     if (y >= this.height) return false;
 
     const shape = piece.getShape();
@@ -50,8 +49,6 @@ class Board {
   }
 
   placePiece(piece, x, y) {
-    console.log(`placing piece at ${x}, ${y}`);
-
     const shape = piece.getShape();
     for (let i = 0; i < shape.length; ++i) {
       for (let j = 0; j < shape[i].length; ++j) {
@@ -60,7 +57,6 @@ class Board {
         }
       }
     }
-    console.log(this.board);
   }
 }
 

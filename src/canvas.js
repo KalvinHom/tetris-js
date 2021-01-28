@@ -14,7 +14,7 @@ class Canvas {
     this.scorePosY = 428;
 
     this.previewX = 400;
-    this.previewY = 28;
+    this.previewY = 120;
 
     this.board = board;
     this.boarderColor = "#fff";
@@ -25,51 +25,6 @@ class Canvas {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.context = this.canvas.getContext("2d");
-  }
-
-  drawPiecePreview(piece) {
-    const scoreBorder = [
-      this.previewX - this.borderThickness,
-      this.previewY - this.borderThickness,
-      this.borderThickness + this.previewX + 200,
-      this.borderThickness + this.previewY + 200,
-    ];
-
-    this.context.beginPath();
-    this.context.lineWidth = 1;
-    this.context.moveTo(scoreBorder[0], scoreBorder[1]);
-    this.context.lineTo(scoreBorder[2], scoreBorder[1]);
-    this.context.lineTo(scoreBorder[2], scoreBorder[3]);
-    this.context.lineTo(scoreBorder[0], scoreBorder[3]);
-    this.context.closePath();
-    this.context.strokeStyle = this.borderColor;
-    this.context.stroke();
-    const shape = piece.getShape();
-    for (let i = 0; i < shape.length; ++i) {
-      for (let j = 0; j < shape[i].length; ++j) {
-        if (shape[i][j] != 0) {
-          this.drawSquare(
-            this.previewX + 50 + j * this.cellSize,
-            this.previewY + 50 + i * this.cellSize,
-            piece.color
-          );
-        }
-      }
-    }
-  }
-
-  drawLevel(level) {
-    this.context.stroke();
-    this.context.font = "40px serif";
-    this.context.fillStyle = "#000000";
-    this.context.fillText(`Level: ${level}`, this.levelPosX, this.levelPosY);
-  }
-
-  drawScore(score) {
-    this.context.stroke();
-    this.context.font = "40px serif";
-    this.context.fillStyle = "#000000";
-    this.context.fillText(`Score: ${score}`, this.scorePosX, this.scorePosY);
   }
 
   drawBorders() {
@@ -135,16 +90,49 @@ class Canvas {
     }
   }
 
-  drawSquare(x, y, color) {
-    this.context.beginPath();
+  drawLevel(level) {
+    this.context.stroke();
+    this.context.font = "40px serif";
+    this.context.fillStyle = "#000000";
+    this.context.fillText(`Level: ${level}`, this.levelPosX, this.levelPosY);
+  }
 
-    this.context.fillStyle = color;
-    this.context.fillRect(
-      x + 0.5,
-      y + 0.5,
-      this.cellSize - 1,
-      this.cellSize - 1
-    );
+  drawScore(score) {
+    this.context.stroke();
+    this.context.font = "40px serif";
+    this.context.fillStyle = "#000000";
+    this.context.fillText(`Score: ${score}`, this.scorePosX, this.scorePosY);
+  }
+
+  drawPiecePreview(piece) {
+    const scoreBorder = [
+      this.previewX - this.borderThickness,
+      this.previewY - this.borderThickness,
+      this.borderThickness + this.previewX + 200,
+      this.borderThickness + this.previewY + 150,
+    ];
+
+    this.context.beginPath();
+    this.context.lineWidth = 1;
+    this.context.moveTo(scoreBorder[0], scoreBorder[1]);
+    this.context.lineTo(scoreBorder[2], scoreBorder[1]);
+    this.context.lineTo(scoreBorder[2], scoreBorder[3]);
+    this.context.lineTo(scoreBorder[0], scoreBorder[3]);
+    this.context.closePath();
+    this.context.strokeStyle = "black";
+    this.context.stroke();
+    const shape = piece.getShape();
+    for (let i = 0; i < shape.length; ++i) {
+      for (let j = 0; j < shape[i].length; ++j) {
+        if (shape[i][j] != 0) {
+          this.drawSquare(
+            this.previewX + 30 + j * this.cellSize,
+            this.previewY + 35 + i * this.cellSize,
+            piece.color
+          );
+        }
+      }
+    }
   }
 
   drawPiece(piece, posX, posY) {
@@ -162,6 +150,34 @@ class Canvas {
         }
       }
     }
+  }
+
+  drawSquare(x, y, color) {
+    this.context.beginPath();
+
+    this.context.fillStyle = color;
+    this.context.fillRect(
+      x + 0.5,
+      y + 0.5,
+      this.cellSize - 1,
+      this.cellSize - 1
+    );
+  }
+
+  drawRestart() {
+    this.context.beginPath();
+    this.context.rect(500, 500, 250, 100);
+    this.context.fillStyle = "#000000";
+    this.context.fillStyle = "rgba(225,225,225,0.5)";
+    // this.context.fillRect(25, 72, 32, 32);
+    this.context.fill();
+    this.context.lineWidth = 2;
+    this.context.strokeStyle = "#000000";
+    this.context.stroke();
+    this.context.closePath();
+    this.context.font = "40pt Serif";
+    this.context.fillStyle = "#000000";
+    this.context.fillText("Restart", 550, 570);
   }
 }
 

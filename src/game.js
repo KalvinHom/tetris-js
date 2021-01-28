@@ -13,8 +13,20 @@ const PIECES = [LPiece, L2Piece, ZPiece, Z2Piece, TPiece, LinePiece, OPiece];
 const ALIVE = 0;
 const GAMEOVER = 1;
 
+const RESTART = {
+  x: 500,
+  y: 500,
+  width: 250,
+  height: 100,
+};
+
 class Game {
   constructor() {
+    this.setDefaults();
+    this.handleRestart = this.handleRestart.bind(this);
+  }
+
+  setDefaults() {
     this.board = new Board(10, 25);
     this.canvas = new Canvas(this.board);
     this.state = ALIVE;
@@ -24,6 +36,59 @@ class Game {
     this.level = 1;
     this.score = 0;
     this.numClears = 0;
+  }
+
+  startGame() {
+    this.lastRenderTime = Date.now();
+    this.setNextPiece();
+    window.requestAnimationFrame(this.tick.bind(this));
+  }
+
+  restartGame() {
+    this.setDefaults();
+    this.canvas.canvas.removeEventListener("click", this.handleRestart, false);
+    this.startGame();
+  }
+
+  gameOver() {
+    this.state = GAMEOVER;
+    this.canvas.drawPiece(this.currentPiece);
+    this.canvas.drawRestart();
+    this.render();
+  }
+
+  setNextPiece() {
+    const rand = Math.floor(Math.random() * 7);
+    this.nextPiece = new PIECES[rand]();
+  }
+
+  movePiece(dir) {
+    const available = this.board.isSpotAvailable(
+      this.currentPiece,
+      this.pieceX + dir,
+      this.pieceY
+    );
+    if (available) this.pieceX += dir;
+    this.render();
+  }
+
+  incrementPiece() {
+    const available = this.board.isSpotAvailable(
+      this.currentPiece,
+      this.pieceX,
+      this.pieceY + 1
+    );
+
+    if (available) this.pieceY = this.pieceY + 1;
+    else {
+      this.board.placePiece(this.currentPiece, this.pieceX, this.pieceY);
+      const linesCleared = this.board.clearLines();
+      if (linesCleared > 0) this.numClears++;
+
+      this.addScore(linesCleared);
+      this.addLevel();
+      this.placeNewPiece(this.currentPiece);
+    }
   }
 
   placeNewPiece() {
@@ -69,57 +134,6 @@ class Game {
     return false;
   }
 
-  gameOver() {
-    this.state = GAMEOVER;
-    this.canvas.drawPiece(this.currentPiece);
-  }
-
-  movePieceLeft() {
-    const available = this.board.isSpotAvailable(
-      this.currentPiece,
-      this.pieceX - 1,
-      this.pieceY
-    );
-    if (available) this.pieceX -= 1;
-    this.render();
-  }
-
-  movePieceRight() {
-    const available = this.board.isSpotAvailable(
-      this.currentPiece,
-      this.pieceX + 1,
-      this.pieceY
-    );
-    if (available) this.pieceX += 1;
-    this.render();
-  }
-
-  speedOn() {
-    this.speedMode = true;
-  }
-
-  speedOff() {
-    this.speedMode = false;
-  }
-  incrementPiece() {
-    const available = this.board.isSpotAvailable(
-      this.currentPiece,
-      this.pieceX,
-      this.pieceY + 1
-    );
-
-    if (available) this.pieceY = this.pieceY + 1;
-    else {
-      this.board.placePiece(this.currentPiece, this.pieceX, this.pieceY);
-      const linesCleared = this.board.clearLines();
-      if (linesCleared > 0) this.numClears++;
-
-      this.addScore(linesCleared);
-      this.addLevel();
-      this.placeNewPiece(this.currentPiece);
-    }
-  }
-
   addScore(linesCleared) {
     if (linesCleared > 0) {
       this.score += this.level * Math.pow(2, linesCleared - 1) * 100;
@@ -132,28 +146,24 @@ class Game {
     }
   }
 
-  setNextPiece() {
-    const rand = Math.floor(Math.random() * 7);
-    this.nextPiece = new PIECES[rand]();
+  speedOn() {
+    this.speedMode = true;
   }
 
-  startGame() {
-    this.lastRenderTime = Date.now();
-    this.setNextPiece();
-    window.requestAnimationFrame(this.tick.bind(this));
+  speedOff() {
+    this.speedMode = false;
+  }
+  showRestart() {
+    const base = this;
+    this.canvas.canvas.addEventListener("click", this.handleRestart, false);
+    this.canvas.drawRestart();
   }
 
-  render() {
-    this.canvas.drawBoard();
-    this.canvas.drawScore(this.score);
-    this.canvas.drawPiecePreview(this.nextPiece);
-    this.canvas.drawLevel(this.level);
-
-    if (this.currentPiece)
-      this.canvas.drawPiece(this.currentPiece, this.pieceX, this.pieceY);
-  }
   tick() {
-    if (this.state == GAMEOVER) return;
+    if (this.state == GAMEOVER) {
+      this.showRestart();
+      return;
+    }
     const elapsed = Date.now() - this.lastRenderTime;
     const speed = this.speedMode ? this.speedAmount : this.gameSpeed;
 
@@ -166,6 +176,45 @@ class Game {
       this.lastRenderTime = Date.now();
     }
     window.requestAnimationFrame(this.tick.bind(this));
+  }
+
+  render() {
+    this.canvas.drawBoard();
+    this.canvas.drawScore(this.score);
+    this.canvas.drawPiecePreview(this.nextPiece);
+    this.canvas.drawLevel(this.level);
+
+    if (this.state == GAMEOVER) {
+      this.showRestart();
+      return;
+    }
+
+    if (this.currentPiece)
+      this.canvas.drawPiece(this.currentPiece, this.pieceX, this.pieceY);
+  }
+
+  getMousePos(canvas, event) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    };
+  }
+
+  isInside(pos, rect) {
+    return (
+      pos.x > rect.x &&
+      pos.x < rect.x + rect.width &&
+      pos.y < rect.y + rect.height &&
+      pos.y > rect.y
+    );
+  }
+
+  handleRestart(evt) {
+    var mousePos = this.getMousePos(this.canvas.canvas, evt);
+    if (this.isInside(mousePos, RESTART)) {
+      this.restartGame();
+    }
   }
 }
 

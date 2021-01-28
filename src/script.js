@@ -4,6 +4,8 @@ import Canvas from "./canvas";
 import Game from "./game";
 import "./style.css";
 import { CLOCKWISE, COUNTERCLOCKWISE } from "./constants";
+const LEFT = -1;
+const RIGHT = 1;
 
 const piece = new LPiece();
 
@@ -18,11 +20,11 @@ window.addEventListener("keydown", function (event) {
   switch (event.key) {
     case "ArrowLeft":
     case "a":
-      game.movePieceLeft();
+      game.movePiece(LEFT);
       break;
     case "ArrowRight":
     case "d":
-      game.movePieceRight();
+      game.movePiece(RIGHT);
       break;
     case "ArrowDown":
     case "s":
