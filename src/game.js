@@ -5,7 +5,7 @@ import LPiece from "./l_piece";
 import L2Piece from "./l2_piece";
 import OPiece from "./o_piece";
 import ZPiece from "./z_piece";
-import Z2Piece from "./z_piece";
+import Z2Piece from "./z2_piece";
 import TPiece from "./t_piece";
 
 const PIECES = [LPiece, L2Piece, ZPiece, Z2Piece, TPiece, LinePiece, OPiece];
